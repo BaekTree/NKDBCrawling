@@ -1,1 +1,9 @@
 nuacboard,crawlbinaryfile
+nkdboard,boardbotEtc
+nkdboard,boardbotLaw
+nkdboard,boardbotNkdlaw
+nkdboard,boardbotStatistics
+nkoreaboard,boardbotExternalcontribution
+nkoreaboard,boardbotContribution
+kolofoboard,boardbotAcademicconference
+kolofoboard,boardbotColumn

@@ -6,11 +6,6 @@ from crawlNKDB.items import CrawlnkdbItem
 from bs4 import BeautifulSoup
 import requests
 
-import configparser
-
-config = configparser.ConfigParser()
-config.read('./../../../config.cnf')
-
 class BoardbotstatisticsSpider(scrapy.Spider):
     name = 'boardbotStatistics'
 

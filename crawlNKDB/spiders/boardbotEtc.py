@@ -93,11 +93,11 @@ class BoardbotetcSpider(scrapy.Spider):
         published_institution = response.xpath('//*[@id="header"]/h1/a/img/@alt').extract()
         item = response.meta['item']
         item["post_title"] = title_text
-        item["post_date"] = date
+        item["post_date"] = date[0]
         item["post_body"] = body_text
-        item["post_writer"] = writer
-        item["published_institution"] = published_institution
+        item["post_writer"] = writer[0]
+        item["published_institution"] = published_institution[0]
         item["published_institution_url"]= "http://nkd.or.kr/"
-        item["top_category"] = top_category
+        item["top_category"] = top_category[0]
 
         yield item

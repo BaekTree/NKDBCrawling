@@ -1,0 +1,62 @@
+{
+    "settings": {
+        "index": {
+            "analysis": {
+                "tokenizer": {
+                    "nori_user_dict": {
+                        "type": "nori_tokenizer",
+                        "decompound_mode": "mixed",
+                        "user_dictionary": "userdic_ko.txt"
+                    }
+                },
+                "analyzer": {
+                    "my_analyzer": {
+                        "type": "custom",
+                        "tokenizer": "nori_user_dict",
+                        "filter": [
+                            "my_posfilter",
+                            "nori_readingform"
+                        ]
+                    }
+                },
+                "filter": {
+                    "my_posfilter": {
+                        "type": "nori_part_of_speech",
+                        "stoptags": [
+                            "E",
+                            "IC",
+                            "J",
+                            "MAG",
+                            "MM",
+                            "NA",
+                            "NR",
+                            "SC",
+                            "SE",
+                            "SF",
+                            "SH",
+                            "SL",
+                            "SN",
+                            "SP",
+                            "SSC",
+                            "SSO",
+                            "SY",
+                            "UNA",
+                            "UNKNOWN",
+                            "VA",
+                            "VCN",
+                            "VCP",
+                            "VSV",
+                            "VV",
+                            "VX",
+                            "XPN",
+                            "XR",
+                            "XSA",
+                            "XSN",
+                            "XSV"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

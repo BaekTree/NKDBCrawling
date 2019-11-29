@@ -11,7 +11,7 @@ def transport_from_mongo_to_index():
     print("Success transporting the data from mongodb to ES index!")
 
 if __name__ == "__main__":
-    name = "nkdboard" # Only change this variable to the name of the bulletin board inside information.txt!
+    name = "nkdb" # Only change this variable to the name of the bulletin board inside information.txt!
     os.environ['mongo_es_name'] = name
     command = "echo $mongo_es_name"
     os.system(command)

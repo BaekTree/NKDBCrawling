@@ -8,12 +8,15 @@ while True:
         break
     # here
     arr = line.split(',')    
-    mongo_database = arr[0]
-    mongo_collection = arr[0]
+    #mongo_database = arr[0]
+    #mongo_collection = arr[0]
+    mongo_database = "nkdb"
+    mongo_collection = "nkdb"
     execute_file_name = arr[1]
     os.chdir("/home/eunjiwon/crawlNKDB/crawlNKDB/spiders")
     command = "scrapy crawl " + execute_file_name
     os.system(command)
+    print("Finish following command: " + command)
 
 information_file.close()
 

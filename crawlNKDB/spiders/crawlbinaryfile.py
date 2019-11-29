@@ -23,7 +23,7 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         scrapy.Spider.__init__(self)
         self.start_urls = 'http://www.nuac.go.kr/actions/BbsDataAction?cmd=list&_max=05&menuid=G0205&bbs_id=G0205&_template=03#'
         self.client = pymongo.MongoClient('mongodb://eunjiwon:eunjiwon@localhost:27017')
-        self.db = self.client['attchment']
+        self.db = self.client['attachment']
         self.fs = gridfs.GridFS(self.db)
 
     def start_requests(self):

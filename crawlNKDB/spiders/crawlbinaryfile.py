@@ -108,11 +108,11 @@ class CrawlbinaryfileSpider(scrapy.Spider):
 
         file_name = item['file_name']
         if file_name.find("hwp") != -1:
-            tempfile = NamedTemporaryFile()
-            tempfile.write(response.body)
-            tempfile.flush()
+            path = "/home/eunjiwon/crawlNKDB/crawlNKDB/hwp/" + file_name
+            with open(path, 'wb') as f:
+                f.write(response.body)
             # Using other tool to handle hwp file 
-            command = "hwp5txt " + tempfile.name + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
+            command = "hwp5txt " + path + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
             print("@@@@ file name contains hwp : ", file_name)
             print("execute following command ", command)
             os.system(command)
@@ -122,6 +122,7 @@ class CrawlbinaryfileSpider(scrapy.Spider):
             #with open(temp_saving_file, 'wb') as f:
             #f.write(self.fs.get(file_id).read())
             #print("#################3", self.fs.get(file_id).read())
+            '''
             tempfile = NamedTemporaryFile()
             tempfile.write(response.body)
             tempfile.flush()
@@ -134,4 +135,5 @@ class CrawlbinaryfileSpider(scrapy.Spider):
             #print("extracted_data is : ", extracted_data)
             tempfile.close()
             item['file_extracted_content'] = extracted_data
+            '''
         yield item

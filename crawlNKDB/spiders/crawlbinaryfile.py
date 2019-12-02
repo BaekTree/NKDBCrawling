@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import scrapy
 import sys
 from crawlNKDB.items import CrawlnkdbItem
@@ -88,7 +89,11 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         if file_name:
             if file_name.find("hwp") != -1:
                 # Using other tool to handle hwp file
+                command = "hwp5txt " + file_name + " --output=" + file_name + ".txt"
                 print("@@@@ file name contains hwp : ", file_name)
+                print("execute following command ", command)
+                os.system(command)
+                 
             else:
                 file_download_url = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/@href').extract()
                 file_download_url = "http://www.nuac.go.kr" + file_download_url[0]
@@ -104,21 +109,30 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         item = response.meta['item']
         file_id = self.fs.put(response.body)
         item['file_id_in_fsfiles'] = file_id
-        # check saved status
-        #temp_saving_file = "test_saving_fs.pdf"
-        #with open(temp_saving_file, 'wb') as f:
-        #    f.write(self.fs.get(file_id).read())
-        #print("#################3", self.fs.get(file_id).read())
-        tempfile = NamedTemporaryFile()
-        tempfile.write(response.body)
-        tempfile.flush()
-        #print("tempfile.name is : ", tempfile.name)
-        extracted_data = parser.from_file(tempfile.name)
-        #print("@@@@@@@@@@@@@@@extracted_data is : ", extracted_data)
-        extracted_data = extracted_data["content"]
-        extracted_data = CONTROL_CHAR_RE.sub('', extracted_data)
-        extracted_data = extracted_data.replace('\n\n', '')
-        #print("extracted_data is : ", extracted_data)
-        tempfile.close()
-        item['file_extracted_content'] = extracted_data
+
+        file_name = item['file_name']
+        if file_name.find("hwp") != -1:
+            # Using other tool to handle hwp file
+            command = "hwp5txt " + file_name + " --output=" + file_name + ".txt"
+            print("@@@@ file name contains hwp : ", file_name)
+            print("execute following command ", command)
+            os.system(command)
+        else:
+            # check saved status
+            # temp_saving_file = "test_saving_fs.pdf"
+            # with open(temp_saving_file, 'wb') as f:
+            # f.write(self.fs.get(file_id).read())
+            # print("#################3", self.fs.get(file_id).read())
+            tempfile = NamedTemporaryFile()
+            tempfile.write(response.body)
+            tempfile.flush()
+            #print("tempfile.name is : ", tempfile.name)
+            extracted_data = parser.from_file(tempfile.name)
+            #print("@@@@@@@@@@@@@@@extracted_data is : ", extracted_data)
+            extracted_data = extracted_data["content"]
+            extracted_data = CONTROL_CHAR_RE.sub('', extracted_data)
+            extracted_data = extracted_data.replace('\n\n', '')
+            #print("extracted_data is : ", extracted_data)
+            tempfile.close()
+            item['file_extracted_content'] = extracted_data
         yield item

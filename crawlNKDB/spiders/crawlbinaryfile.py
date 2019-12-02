@@ -87,20 +87,16 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         item['top_category'] = top_categorys.strip()
         file_name = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/text()').get()
         if file_name:
-            if file_name.find("hwp") != -1:
-                # Using other tool to handle hwp file
-                command = "hwp5txt " + file_name + " --output=" + file_name + ".txt"
-                print("@@@@ file name contains hwp : ", file_name)
-                print("execute following command ", command)
-                os.system(command)
-                 
-            else:
-                file_download_url = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/@href').extract()
-                file_download_url = "http://www.nuac.go.kr" + file_download_url[0]
-                item['file_download_url'] = file_download_url
-                item['file_name'] = file_name.strip()
-                print("@@@@@@file name ", file_name)
-                yield scrapy.Request(file_download_url, callback=self.save_file, meta={'item':item})
+            # if file_name.find("hwp") != -1:
+            #     # Using other tool to handle hwp file
+            #     print("@@@@ file name contains hwp : ", file_name)
+            # else:
+            file_download_url = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/@href').extract()
+            file_download_url = "http://www.nuac.go.kr" + file_download_url[0]
+            item['file_download_url'] = file_download_url
+            item['file_name'] = file_name.strip()
+            print("@@@@@@file name ", file_name)
+            yield scrapy.Request(file_download_url, callback=self.save_file, meta={'item':item})
         else:
             print("###############file does not exist#################")
             yield item
@@ -112,17 +108,20 @@ class CrawlbinaryfileSpider(scrapy.Spider):
 
         file_name = item['file_name']
         if file_name.find("hwp") != -1:
-            # Using other tool to handle hwp file
-            command = "hwp5txt " + file_name + " --output=" + file_name + ".txt"
+            tempfile = NamedTemporaryFile()
+            tempfile.write(response.body)
+            tempfile.flush()
+            # Using other tool to handle hwp file 
+            command = "hwp5txt " + tempfile.name + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
             print("@@@@ file name contains hwp : ", file_name)
             print("execute following command ", command)
             os.system(command)
         else:
             # check saved status
-            # temp_saving_file = "test_saving_fs.pdf"
-            # with open(temp_saving_file, 'wb') as f:
-            # f.write(self.fs.get(file_id).read())
-            # print("#################3", self.fs.get(file_id).read())
+            #temp_saving_file = "test_saving_fs.pdf"
+            #with open(temp_saving_file, 'wb') as f:
+            #f.write(self.fs.get(file_id).read())
+            #print("#################3", self.fs.get(file_id).read())
             tempfile = NamedTemporaryFile()
             tempfile.write(response.body)
             tempfile.flush()

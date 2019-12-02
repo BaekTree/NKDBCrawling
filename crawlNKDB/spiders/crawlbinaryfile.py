@@ -86,16 +86,16 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         item['top_category'] = top_categorys.strip()
         file_name = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/text()').get()
         if file_name:
-            if file_name.find("hwp") != -1:
-                # Using other tool to handle hwp file
-                print("@@@@ file name contains hwp : ", file_name)
-            else:
-                file_download_url = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/@href').extract()
-                file_download_url = "http://www.nuac.go.kr" + file_download_url[0]
-                item['file_download_url'] = file_download_url
-                item['file_name'] = file_name.strip()
-                print("@@@@@@file name ", file_name)
-                yield scrapy.Request(file_download_url, callback=self.save_file, meta={'item':item})
+            # if file_name.find("hwp") != -1:
+            #     # Using other tool to handle hwp file
+            #     print("@@@@ file name contains hwp : ", file_name)
+            # else:
+            file_download_url = response.xpath('//*[@id="smain_all"]/table/tbody/tr[1]/td[2]/a/@href').extract()
+            file_download_url = "http://www.nuac.go.kr" + file_download_url[0]
+            item['file_download_url'] = file_download_url
+            item['file_name'] = file_name.strip()
+            print("@@@@@@file name ", file_name)
+            yield scrapy.Request(file_download_url, callback=self.save_file, meta={'item':item})
         else:
             print("###############file does not exist#################")
             yield item
@@ -104,21 +104,34 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         item = response.meta['item']
         file_id = self.fs.put(response.body)
         item['file_id_in_fsfiles'] = file_id
-        # check saved status
-        #temp_saving_file = "test_saving_fs.pdf"
-        #with open(temp_saving_file, 'wb') as f:
-        #    f.write(self.fs.get(file_id).read())
-        #print("#################3", self.fs.get(file_id).read())
-        tempfile = NamedTemporaryFile()
-        tempfile.write(response.body)
-        tempfile.flush()
-        #print("tempfile.name is : ", tempfile.name)
-        extracted_data = parser.from_file(tempfile.name)
-        #print("@@@@@@@@@@@@@@@extracted_data is : ", extracted_data)
-        extracted_data = extracted_data["content"]
-        extracted_data = CONTROL_CHAR_RE.sub('', extracted_data)
-        extracted_data = extracted_data.replace('\n\n', '')
-        #print("extracted_data is : ", extracted_data)
-        tempfile.close()
-        item['file_extracted_content'] = extracted_data
+
+        file_name = item['file_name']
+        if file_name.find("hwp") != -1:
+            tempfile = NamedTemporaryFile()
+            tempfile.write(response.body)
+            tempfile.flush()
+            # Using other tool to handle hwp file 
+            command = "hwp5txt " + tempfile.name + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
+            print("@@@@ file name contains hwp : ", file_name)
+            print("execute following command ", command)
+            os.system(command)
+
+        else:
+            # check saved status
+            #temp_saving_file = "test_saving_fs.pdf"
+            #with open(temp_saving_file, 'wb') as f:
+            #f.write(self.fs.get(file_id).read())
+            #print("#################3", self.fs.get(file_id).read())
+            tempfile = NamedTemporaryFile()
+            tempfile.write(response.body)
+            tempfile.flush()
+            #print("tempfile.name is : ", tempfile.name)
+            extracted_data = parser.from_file(tempfile.name)
+            #print("@@@@@@@@@@@@@@@extracted_data is : ", extracted_data)
+            extracted_data = extracted_data["content"]
+            extracted_data = CONTROL_CHAR_RE.sub('', extracted_data)
+            extracted_data = extracted_data.replace('\n\n', '')
+            #print("extracted_data is : ", extracted_data)
+            tempfile.close()
+            item['file_extracted_content'] = extracted_data
         yield item

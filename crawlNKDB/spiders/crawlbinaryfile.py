@@ -117,6 +117,12 @@ class CrawlbinaryfileSpider(scrapy.Spider):
             print("@@@@ file name contains hwp : ", file_name)
             # print("execute following command ", command)
             # os.system(command)
+            extracted_data = parser.from_file("/home/eunjiwon/crawlNKDB/crawlNKDB/hwp/" + file_name + ".pdf")
+            #print("@@@@@@@@@@@@@@@extracted_data is : ", extracted_data)
+            extracted_data = extracted_data["content"]
+            extracted_data = CONTROL_CHAR_RE.sub('', extracted_data)
+            extracted_data = extracted_data.replace('\n\n', '')
+            #print("extracted_data is : ", extracted_data)
         else:
             # check saved status
             #temp_saving_file = "test_saving_fs.pdf"

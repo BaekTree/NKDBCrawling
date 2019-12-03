@@ -107,13 +107,16 @@ class CrawlbinaryfileSpider(scrapy.Spider):
         item['file_id_in_fsfiles'] = file_id
 
         file_name = item['file_name']
-        file_url = item['file_download_url']
+    
         if file_name.find("hwp") != -1:
+            path = "/home/eunjiwon/crawlNKDB/crawlNKDB/hwp/" + file_name + ".pdf"
+            with open(path, 'wb') as f:
+                f.write(response.body)
             # Using other tool to handle hwp file 
-            command = "hwp5txt " + file_url + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
+            # command = "hwp5txt " + path + " --output=/home/eunjiwon/crawlNKDB/crawlNKDB/hwptotxt/" + file_name + ".txt"
             print("@@@@ file name contains hwp : ", file_name)
-            print("execute following command ", command)
-            os.system(command)
+            # print("execute following command ", command)
+            # os.system(command)
         else:
             # check saved status
             #temp_saving_file = "test_saving_fs.pdf"

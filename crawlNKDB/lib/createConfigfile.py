@@ -26,14 +26,20 @@ import os
 import sys
 from pathlib import Path
 
+split_unit = None
+if os.name == "nt":
+    split_unit = "\\"
+else:
+    split_unit = "/"
+
 this_file_dir = os.path.abspath(__file__)
 # print(this_file_dir)
-dir_temp = this_file_dir.split('\\')
+dir_temp = this_file_dir.split(split_unit)
 # print(dir_temp)
 dir_temp.remove(dir_temp[-1])#createConfigFile.py
 dir_temp[-1] = "spiders"#replace lib with spider
 # print(dir_temp)
-spider_dir = "\\".join(dir_temp)
+spider_dir = split_unit.join(dir_temp)
 # print(spider_dir)
 
 

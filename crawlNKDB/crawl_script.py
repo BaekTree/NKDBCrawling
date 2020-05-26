@@ -2,9 +2,10 @@ import os
 import sys
 import configparser
 config = configparser.ConfigParser()
-config.read('./../lib/config.cnf')
+config.read('./lib/config.cnf')
 
-information_file = open("../information.txt", 'r')
+information_file = open("./information.txt", 'r')
+os.chdir(config['SERVER']['PATH_SPIDER'])
 
 while True:
     line = information_file.readline()
@@ -17,7 +18,6 @@ while True:
     mongo_database = config['DB']['MONGO_DB']
     mongo_collection = "nkdb"
     execute_file_name = arr[1]
-    os.chdir(config['SERVER']['PATH_SPIDER'])
     command = "scrapy crawl " + execute_file_name
     os.system(command)
     print("Finish following command: " + command)

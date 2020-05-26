@@ -1,6 +1,6 @@
 [DB]
 mongo_uri = mongodb://localhost:27017
-mongo_db = NKDB
+mongo_db = NKDB_with_all
 
 [VARS]
 var1 = post_title

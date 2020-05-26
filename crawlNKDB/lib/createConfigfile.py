@@ -4,7 +4,7 @@ config = ConfigParser()
 
 config['DB'] = {
     'MONGO_URI' : 'mongodb://localhost:27017',
-    'MONGO_DB' : 'NKDB'
+    'MONGO_DB' : 'NKDB_with_all'
 }
 
 config['VARS'] = {

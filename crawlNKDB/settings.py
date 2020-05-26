@@ -9,17 +9,19 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-import configparser
-config = configparser.ConfigParser()
-config.read('./../lib/config.cnf')
+
 
 BOT_NAME = 'crawlNKDB'
 
 SPIDER_MODULES = ['crawlNKDB.spiders']
 NEWSPIDER_MODULE = 'crawlNKDB.spiders'
 
+import configparser
+config = configparser.ConfigParser()
+config.read('./../lib/config.cnf')
+
 # Mongo DB
-ITEM_PIPELINES = {'crawlNKDB.pipelines.CrawlnkdbPipeline': 300, }
+ITEM_PIPELINES = {'crawlNKDB.pipelines.CrawlnkdbPipeline': 300, }#temporary
 MONGO_URI = config['DB']['MONGO_URI']
 #MONGO_DATABASE = 'nuacboard'
 

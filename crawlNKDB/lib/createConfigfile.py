@@ -26,6 +26,12 @@ import os
 import sys
 from pathlib import Path
 
+split_unit = None
+if os.name == "nt":
+    split_unit = "\\"
+else:
+    split_unit = "/"
+
 this_file_dir = os.path.abspath(__file__)
 # print(this_file_dir)
 dir_temp = this_file_dir.split('\\')

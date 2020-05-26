@@ -22,12 +22,27 @@ config['VARS'] = {
     'VAR12' : 'file_extracted_content'
 }
 
+import os
+import sys
+from pathlib import Path
+
+this_file_dir = os.path.abspath(__file__)
+# print(this_file_dir)
+dir_temp = this_file_dir.split('\\')
+# print(dir_temp)
+dir_temp.remove(dir_temp[-1])#createConfigFile.py
+dir_temp[-1] = "spiders"#replace lib with spider
+# print(dir_temp)
+spider_dir = "\\".join(dir_temp)
+# print(spider_dir)
+
+
 config['LOCAL'] = {
-    'PATH_SPIDER' : '/Users/sunzero/Dropbox/Crawling/NKDBCrawling_capston/crawlNKDB/spiders'
+    'PATH_SPIDER' : spider_dir
 }
 
 config['SERVER'] = {
-    'PATH_SPIDER' : '/home/hyeyoung/NKDBCrawling_capston/crawlNKDB/spiders'
+    'PATH_SPIDER' : spider_dir#'/home/hyeyoung/NKDBCrawling_capston/crawlNKDB/spiders'
 }
 
 with open('./config.cnf', 'w') as f:

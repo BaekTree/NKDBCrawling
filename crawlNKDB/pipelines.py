@@ -17,7 +17,9 @@ config = configparser.ConfigParser()
 config.read('./../lib/config.cnf')
 
 sys.path.append(config['SERVER']['PATH_SPIDER'])
-from crawl_script import mongo_collection, mongo_database
+# from crawl_script import mongo_collection, mongo_database #is this the reason it runs script file twice?
+mongo_database = config['DB']['MONGO_DB']
+mongo_collection = "nkdb"
 
 class CrawlnkdbPipeline(object):
     #collection_name = 'nuacboard' #
